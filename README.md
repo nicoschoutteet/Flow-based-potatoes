@@ -12,5 +12,3 @@ Three files contain the code for the figures:
 
 While the figures themselves are listed in the subdirectory [Images](images/).
 
-![](https://github.com/nicoschoutteet/Flow-based-potatoes/images/raster.png)
-
