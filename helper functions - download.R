@@ -38,6 +38,44 @@ JAOPuTo_finaldomain <- function(start_DateTime,
     return()
 }
 
+# shadow prices
+
+JAOPuTo_shadowprices <- function(start_DateTime,
+                                 end_DateTime) {
+  
+  df_shadowprices <- data.frame()
+  
+  ShadowPrices <- httr::GET("https://publicationtool.jao.eu/core/api/data/shadowPrices",
+                            query = list(Filter = {},
+                                         Skip = "",
+                                         Take = "",
+                                         FromUtc = format(with_tz(start_DateTime, "UTC"), "%Y-%m-%dT%H:%M:%S.000Z"),
+                                         ToUtc = format(with_tz(end_DateTime, "UTC"), "%Y-%m-%dT%H:%M:%S.000Z")))%>%
+    httr::content(as = "text") %>%
+    jsonlite::fromJSON()
+  
+  df_shadowprices <- ShadowPrices$data %>%
+    mutate(DateTime = with_tz(as.POSIXct(dateTimeUtc,
+                                         format = "%Y-%m-%dT%H:%M:%S",
+                                         tz = "UTC"),
+                              "CET"),
+           tso = recode(tso,
+                        "50HERTZ" = "50Hertz",
+                        "Apg" = "APG",
+                        "Ceps" = "CEPS",
+                        "Eles" = "ELES",
+                        "Hops" = "HOPS",
+                        "Mavir" = "MAVIR",
+                        "Pse" = "PSE",
+                        "Rte" = "RTE",
+                        "Seps" = "SEPS",
+                        "TennetBv" = "TenneT BV",
+                        "TennetGmbh" = "TenneT GmbH",
+                        "TransnetBw" = "TransnetBW")) %>%
+    select(DateTime, everything(), -id, -dateTimeUtc) %>%
+    return()
+}
+
 # Core net positions
 
 JAOPuTo_netpositions <- function(start_DateTime,

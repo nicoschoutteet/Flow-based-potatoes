@@ -72,7 +72,7 @@ for (i in seq_along(seq.POSIXt(as.POSIXct("2022-11-10 00:00", "CET"),
 # create GIF based on 48 png's---------------------------------------------
 
 ## list file names and read in
-imgs <- list.files("GIF", full.names = TRUE)
+imgs <- list.files("images/GIF", full.names = TRUE)
 img_list <- lapply(imgs, image_read)
 
 ## join the images together
@@ -86,4 +86,4 @@ img_animated
 
 ## save to disk
 image_write(image = img_animated,
-            path = "GIF test.gif")
+            path = "images/GIF.gif")
